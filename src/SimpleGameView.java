@@ -26,30 +26,20 @@ public record SimpleGameView(int xOrigin, int yOrigin, int height, int width, in
     return new SimpleGameView(xOrigin, yOrigin, length, 7 * squareSize, squareSize, loader, widthWindow, heightWindow);
   }
   
-  private static void checkRange(double min, double value, double max) {
-    if (value < min || value > max) {
-        throw new IllegalArgumentException("Invalid coordinate: " + value);
-    }
-  }
   
-  private void drawImage(Graphics2D graphics, BufferedImage image, float x, float y, float dimX, float dimY) {
+  
+  /*private void drawImage(Graphics2D graphics, BufferedImage image, float x, float y, float dimX, float dimY) {
     var width = image.getWidth();
     var height = image.getHeight();
     var scale = Math.min(dimX / width, dimY / height);
     var transform = new AffineTransform(scale, 0, 0, scale, x + (dimX - scale * width) / 2,
             y + (dimY - scale * height) / 2);
     graphics.drawImage(image, transform, null);
-  }
-  
-  /*private int getXPlayer(int pos) {
-    return 
   }*/
   
-  private void changeDirection(Player player) {
-    if ((player.getPosition()-5)%7==0) {
-      player.switchDirection();
-    }
-  }
+  
+  
+  
   
   
   public int getPlayerChoice(ApplicationContext context, SimpleGameData data) {//ADD CONDITION ON X AND Y
@@ -85,11 +75,9 @@ public record SimpleGameView(int xOrigin, int yOrigin, int height, int width, in
     }
     if (data.getTurnPlayer().equals(data.getPlayer1())) {
       graphics.setColor(Color.BLUE);
-      System.out.println(("aaaa"));
     }
     else if (data.getTurnPlayer().equals(data.getPlayer2())) {
       graphics.setColor(Color.ORANGE);
-      System.out.println("bbbb");
     }
     for (int i = 0; i < 9; i++) {
       for (int j = 0; j < 9; j++) {
@@ -169,13 +157,7 @@ public record SimpleGameView(int xOrigin, int yOrigin, int height, int width, in
     
   }
   
-  /*public int getPatchWidth(Patch p) {
-    
-  }
   
-  public int getPatchHeight(Patch p) {
-    
-  }*/
   
   private void drawPatch(Patch patch, Graphics2D graphics, int x, int y) {
     for (int i = 0; i < patch.height(); i++) {
@@ -186,40 +168,10 @@ public record SimpleGameView(int xOrigin, int yOrigin, int height, int width, in
       }
       
     }
-    /*graphics.setColor(Color.BLACK);
-    graphics.drawLine(x, y, x+patch.width()*30, y);
-    graphics.drawLine(x, y+patch.height()*30, x+patch.width()*30, y+patch.height()*30);
-    graphics.drawLine(x, y, x, y+patch.height()*30);
-    graphics.drawLine(x+patch.width()*30, y, x+patch.width()*30, y+patch.height()*30);*/
+    
   }
   
-  /*private void drawPlayer(Player player) {
-    
-  }*/
   
-  /**
-   * Allows the player to play his turn
-   */
-  
-  /*public void play(ApplicationContext context, SimpleGameData data) {
-    boolean madeChoice = false;
-     
-    int posOtherPlayer = data.getTurnPlayer().equals(data.getPlayer1()) ? data.getPlayer2().getPosition() : data.getPlayer1().getPosition();
-    Patch chosenPiece = null;
-    while (!madeChoice) {
-      int choice = getPlayerChoice(context, data);
-      if (choice == 1 || choice == 2 || choice == 3) {
-        chosenPiece = buyPatch(choice, data);
-        if (chosenPiece != null) {
-          madeChoice = true;
-        }
-      } else {
-        moveAfterSkipping(context, data);
-        return;
-      }
-    }
-    playAfterBuy(context, chosenPiece, posOtherPlayer, data);
-  }*/
   
   public void playAfterBuy(ApplicationContext context, Patch chosenPiece, int posOtherPlayer, SimpleGameData data) {
     Objects.requireNonNull(chosenPiece);
@@ -231,31 +183,9 @@ public record SimpleGameView(int xOrigin, int yOrigin, int height, int width, in
     }
     if (data.getTurnPlayer().getPosition() > posOtherPlayer) {
       data.switchTurn();
-      //SimpleGameView.draw(context, data, view);
     }
   }
   
-  /*public int getPlayerChoice(ApplicationContext context, SimpleGameData data) {
-    Scanner scanner = new Scanner(System.in);
-    int choice = 0;
-    boolean validInput = false;
-    while (!validInput) {
-      System.out.println("Which patch do you want to buy?\n\n" + "1- " + data.getPatches().get(data.getNTPos()).toString() + "\n2- "
-          + data.getPatches().get(data.getNTPos() + 1).toString());
-      System.out.println();
-      System.out.println("3- " + data.getPatches().get(data.getNTPos() + 2).toString());
-      System.out.println("\n\n");
-      System.out.println("Type the number of the patch you want or type another " + "number to skip");
-      try {
-        choice = scanner.nextInt();
-        validInput = true;
-      } catch (InputMismatchException e) {
-        System.out.println("Invalid input! Please enter a number!!!\n");
-        scanner.next();
-      }
-    }
-    return choice;
-  }*/
   
   /**
    * Allows the player to buy a patch
@@ -272,18 +202,16 @@ public record SimpleGameView(int xOrigin, int yOrigin, int height, int width, in
     } else if (choice == 3 && data.getPatches().get(data.getNTPos() + 2).price() <= data.getTurnPlayer().getButtons()) {
       chosenPiece = data.choosePiece(2);
     } else {
-      //System.out.println("\nYou don't have enough buttons!!!\n");
       data.setNotEnoughBut(true);
       SimpleGameView.draw(context, data, view);
       try {
-        Thread.sleep(3000); // 3000 milliseconds = 3 seconds
+        Thread.sleep(3000); 
       } catch (InterruptedException e) {
           e.printStackTrace();
       }
       data.setNotEnoughBut(false);
       SimpleGameView.draw(context, data, view);
-      //wait 3 seconds then make text dissapear
-      //System.out.println("Try again :\n");
+      
       return null;
     }
     data.getTurnPlayer().addPatchOwned(chosenPiece);
@@ -298,11 +226,9 @@ public record SimpleGameView(int xOrigin, int yOrigin, int height, int width, in
       graphics.drawString("You don't have enough buttons!!!", xOrigin-3*squareSize-75, yOrigin+10*squareSize);
       
       
-      //SimpleGameView.draw(null, data, null);
     }
     else {
       graphics.setColor(Color.WHITE);
-      System.out.println("i will drop you");
       graphics.fillRect(xOrigin-3*squareSize-75, yOrigin+9*squareSize, 3*squareSize, 3*squareSize);
       
     }
@@ -377,7 +303,6 @@ public record SimpleGameView(int xOrigin, int yOrigin, int height, int width, in
         }
         var action = event.getAction();
         
-        //System.out.println(action);
         if (action!=Action.POINTER_DOWN) {
           continue;
         }
@@ -388,15 +313,11 @@ public record SimpleGameView(int xOrigin, int yOrigin, int height, int width, in
           }
           x = ((int)location.x-xOrigin)/squareSize-8;
           y = ((int)location.y-yOrigin)/squareSize;
-          //System.out.println("x="+x+" y="+y+"\n");
           break;
         }
-        //System.out.println("xxx="+x+" yyy="+y+"\n");
       }
-      //System.out.println("bbbbbb");
-      //System.out.println("xxxxx="+x+" yyyyy="+y+"\n");
+      
     } while (!data.getTurnPlayer().getBoard().ableToPut(x, y, pieceToPut));
-    //System.out.println("aaaaa\n");
     data.setChosenPatch(null);
     data.getTurnPlayer().getBoard().putPatch(x, y, pieceToPut);
     System.out.println("x="+x+" y="+y+"\n");
@@ -475,73 +396,41 @@ public record SimpleGameView(int xOrigin, int yOrigin, int height, int width, in
     
   }
   
-  /**
-   * Gets row position typed in by the player
-   * 
-   * @param scanner
-   * @return Row position
-   */
-  /*public int getInputX(ApplicationContext context) {//get where the player clicks AND CHANGE METHOD NAME
-    var event = context.pollEvent();
-    var action = event.getAction();
-    if (action==Action.POINTER_DOWN) {
-      var location = event.getLocation();
-      return patchClicked(location.x, location.y, data);
-    }*/
-    //int x = 0;
-    /*boolean validInput = false;
-    while (!validInput) {
-      System.out.println("Board :\n"+toString()+"\n\n");
-      System.out.println("In which position of the quilt do you want to put the patch");
-      System.out.println("Write the line number :");
-      try {
-        x = scanner.nextInt();
-        validInput = true;
-      } catch (InputMismatchException e) {
-        System.out.println("Invalid input! Please enter a number!!!\n");
-        scanner.next();
-      }
-    }*/
-    
-    //return x;
-  //}
+  
 
-  /**
-   * Gets column position typed in by the player
-   * 
-   * @param scanner
-   * @return Column position
-   */
-  public int getInputY() {
-    Scanner scanner = new Scanner(System.in);
-    int y = 0;
-    boolean validInput = false;
-    while (!validInput) {
-      System.out.println("Write the column number :");
-      try {
-        y = scanner.nextInt();
-        validInput = true;
-      } catch (InputMismatchException e) {
-        System.out.println("Invalid input! Please enter a number!!!\n");
-        scanner.next();
+  @Override
+  public void play_game(ApplicationContext context, SimpleGameData data) {
+    SimpleGameView.draw(context, data, this);
+    boolean madeChoice = false;
+    
+    int posOtherPlayer = data.getTurnPlayer().equals(data.getPlayer1()) ? data.getPlayer2().getPosition() : data.getPlayer1().getPosition();
+    Patch chosenPiece = null;
+    while (!madeChoice) {
+      int choice = this.getPlayerChoice(context, data);
+      if (choice == 1 || choice == 2 || choice == 3) {
+        chosenPiece = this.buyPatch(choice, data, context, this);
+        SimpleGameView.draw(context, data, this);
+        if (chosenPiece != null) {
+          madeChoice = true;
+        }
+      } else {
+        this.moveAfterSkipping(context, data, this);
+        SimpleGameView.draw(context, data, this);
+        continue;
       }
     }
-    return y;
+    this.playAfterBuy(context, chosenPiece, posOtherPlayer, data);
+    SimpleGameView.draw(context, data, this);
   }
-
   
   private void draw(Graphics2D graphics, SimpleGameData data) {
-    // example
     graphics.setColor(Color.WHITE);
     graphics.fill(new Rectangle2D.Float(0, 0, widthWindow, heightWindow));
     System.out.println(widthWindow);
     graphics.setColor(Color.BLACK);
     drawQuiltBoard(graphics, data);
     drawTimeBoard(graphics);
-    /*graphics.setColor(Color.BLUE);
-    drawPlayer(graphics, data.getPlayer1());
-    graphics.setColor(Color.ORANGE);
-    drawPlayer(graphics, data.getPlayer2());*/
+    
     announcePlayerTurn(data, graphics);
     
     drawPlayer(graphics, data);
@@ -557,37 +446,6 @@ public record SimpleGameView(int xOrigin, int yOrigin, int height, int width, in
     graphics.drawString("Skip your turn", xOrigin+2*squareSize, yOrigin+8*squareSize+80);
     notEnoughButtons(graphics, data);
     drawRotationChoice(graphics, data);
-    /*graphics.setColor(Color.BLACK);
-    graphics.fillRect(xOrigin+2*squareSize, yOrigin+7*squareSize+120, 3*squareSize, squareSize/2);*/
-    //play(null, data, graphics);
-    /*initialise a function that when you call it there is a if(is patch selected)
-     * if it's true then we execute drawquiltboard, ispatchselected is true after POINTERDOWN*/
-    
-    /*graphics.setColor(Color.BLACK);
-    graphics.setFont(new Font("Arial", Font.BOLD, 24));
-    graphics.drawString("Patchwork", width/2, height/4);
-    graphics.setFont(new Font("Gill Sans", Font.PLAIN, 12));
-    graphics.drawString("1- Play", width/2, height/4+30);
-    graphics.drawString("2- Quit", width/2, height/4+40);*/
-    
-    /*double radius = 350;
-    double centerX = xOrigin+(squareSize*8)/2-50; 
-    double centerY = yOrigin+(squareSize*8)/2-50; 
-    double angleIncrement = Math.PI / 2; 
-    System.out.println("xOrigin= "+ xOrigin+" xOrigin+width="+(xOrigin+8*squareSize)+" centerX= "+centerX);
-    int numPatches = (int) (2 * Math.PI / angleIncrement); 
-
-    for (int i = 0; i < numPatches; i++) {
-        double angle = i * angleIncrement;
-        double x = centerX + radius * Math.cos(angle);
-        double y = centerY + radius * Math.sin(angle);
-        
-        drawImage(graphics, loader.image(i), (float)x, (float)y, 100, 100);
-        
-    }*/
-    
-    
-    
     
   }
   

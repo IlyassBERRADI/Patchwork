@@ -19,7 +19,7 @@ public interface GameView {
    */
   
   
-  //public void play(ApplicationContext context, SimpleGameData data);
+  public void play_game(ApplicationContext context, SimpleGameData data);
   
   
 }

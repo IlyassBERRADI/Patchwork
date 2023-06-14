@@ -81,14 +81,13 @@ public class SimpleGameData {
     this.player1 = player1;
     this.player2 = player2;
     bonusSquare7Owner = null;
-    /*version = chooseVersion();
+    version = chooseVersion();
     if (version==1) {
       mode = chooseMode();
     }
-    else {*/
-      version=2;
+    else {
       mode = 2;
-    //}
+    }
     NTPos = 0;
     if (mode == 1) {
       initSimplePatches();
@@ -133,6 +132,10 @@ public class SimpleGameData {
     }
   }
 
+  /*public int getVersion() {
+    return version;
+  }*/
+  
   public Player getPlayer1() {
     return player1;
   }
@@ -255,6 +258,7 @@ public class SimpleGameData {
   private int chooseVersion() {
     boolean validInput = false;
     int m=0;
+    System.out.println("Welcome to PatchWork!!!\n\n");
     while (!validInput) {
       System.out.println("Choose which version of the game you want to play :\n");
       System.out.println("1- Console version");
