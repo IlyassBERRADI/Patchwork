@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A class representing a player of the game
@@ -30,9 +31,7 @@ public class Player {
    */
   private int pos;
   
-  private int left=1;
-  
-  private int right=0;
+
 
   /**
    * Constructs a player by initializing its attributes
@@ -70,32 +69,9 @@ public class Player {
     return buttons;
   }
 
-  public int getLeft() {
-    return left;
-  }
   
-  public int getRight() {
-    return right;
-  }
   
-  /*public void setLeft(int val) {
-    left=val;
-  }
   
-  public void setRight(int val) {
-    right=val;
-  }*/
-  
-  public void switchDirection() {
-    if (left==1 && right==0) {
-      left=0;
-      right=1;
-    }
-    else {
-      left=1;
-      right=0;
-    }
-  }
   
   /**
    * Returns the quilt board of the player
@@ -130,6 +106,7 @@ public class Player {
    * @param patch Patch to add
    */
   public void addPatchOwned(Patch patch) {
+    Objects.requireNonNull(patch);
     patchsOwned.add(patch);
   }
 

@@ -6,8 +6,8 @@ import java.util.InputMismatchException;
 import java.util.Objects;
 
 /**
- * A class representing a game of Patchwork, which can be played on the terminal
- * This class provides all the necessary methods to make the game work
+ * A class representing the data of the game of Patchwork
+ * This class provides all the necessary informations to make the game work
  * 
  * @author Ilyass BERRADI
  * @author Antoine BENOIT
@@ -19,9 +19,19 @@ public class SimpleGameData {
    * The array that represents the time board content
    */
   private final int timeBoard[] = new int[54];
-
+  /**
+   * A boolean that tells if a player has chosen an expensive patch
+   */
   private boolean notEnoughBut=false;
+  
+  /**
+   * A boolean that represents if a player has chosen a rotation
+   */
   private boolean choosingRotation=false;
+  
+  /**
+   * if the value is null then no patch was chosen, or else it takes the chosen patch as a value
+   */
   private Patch chosenPatch=null;
   
   /**
@@ -132,44 +142,88 @@ public class SimpleGameData {
     }
   }
 
-  /*public int getVersion() {
-    return version;
-  }*/
   
+  /**
+   * Returns the player number 1 of the game
+   * @return player number 1
+   */
   public Player getPlayer1() {
     return player1;
   }
   
+  /**
+   * Returns the player number 2 of the game
+   * @return player number 2
+   */
   public Player getPlayer2() {
     return player2;
   }
   
+  /**
+   * Returns the mode of the game
+   * @return game mode
+   */
   public int getMode() {
     return mode;
   }
   
+  /**
+   * Sets the value of the boolean notEnoughBut
+   * @param boolean value
+   */
   public void setNotEnoughBut(boolean b) {
     notEnoughBut=b;
   }
   
+  /**
+   * Returns the value of the boolean notEnoughBut
+   * @return boolean value
+   */
   public boolean getNotEnoughBut() {
     return notEnoughBut;
   }
   
+  
+  /**
+   * Returns the value of the boolean choosingRotation
+   * @return boolean value
+   */
   public boolean getChoosingRotation() {
     return choosingRotation;
   }
   
+  /**
+   * Sets the value of the boolean choosingRotation
+   * @param boolean value
+   */
   public void setChoosingRotation(boolean b) {
     choosingRotation=b;
   }
   
+  
+  /**
+   * Returns the value of the patch that the player has chosen
+   * @return chosen patch
+   */
   public Patch getChosenPatch() {
     return chosenPatch;
   }
   
+  /**
+   * Sets the value of the patch that the player has chosen
+   * @param chosen patch
+   */
   public void setChosenPatch(Patch p) {
+    Objects.requireNonNull(p);
     chosenPatch=p;
+  }
+  
+  /**
+   * Returns the value of the player to finish the game
+   * @return first finisher
+   */
+  public Player getFirstFinisher() {
+    return firstFinisher;
   }
   
   /**
@@ -243,18 +297,37 @@ public class SimpleGameData {
     patches.add(new Patch(0, 3, 1, 2, 2, new int[][] { { 0, 1 }, { 1, 1 } }));
   }
 
+  
+  /**
+   * Returns the value of the game version that the player has chosen
+   * @return game version
+   */
   public int getVersion() {
     return version;
   }
   
+  /**
+   * Returns the player that has the bonus square
+   * @return player with the bonus 7x7 square
+   */
   public Player getBonusSquare7Owner() {
     return bonusSquare7Owner;
   }
   
+  /**
+   * Sets the attribute bonusSquare7Owner to the player who owns it
+   * @param player that owns bonus square
+   */
   public void setBonusSquare7Owner(Player player) {
+    Objects.requireNonNull(player);
     bonusSquare7Owner=player;
   }
   
+  
+  /**
+   * Lets the player choose between the console version of the game and the graphic version
+   * @return 1 if the player chooses the console version and 2 if he chooses the graphic one
+   */
   private int chooseVersion() {
     boolean validInput = false;
     int m=0;
@@ -280,7 +353,10 @@ public class SimpleGameData {
     return m;
   }
   
-  
+  /**
+   * Returns the array representing the timeboard
+   * @return timeboard
+   */
   public int[] getTimeBoard() {
     return timeBoard;
   }
@@ -357,33 +433,7 @@ public class SimpleGameData {
     return builder;
   }
 
-  /**
-   * Gets the player's choice out of the three patches in front of the neutral
-   * time token
-   * 
-   * @param scanner Reads input of the current player
-   * @return The choice made by the player
-   */
-  /*private int getPlayerChoice(Scanner scanner) {
-    int choice = 0;
-    boolean validInput = false;
-    while (!validInput) {
-      System.out.println("Which patch do you want to buy?\n\n" + "1- " + patches.get(NTPos).toString() + "\n2- "
-          + patches.get(NTPos + 1).toString());
-      System.out.println();
-      System.out.println("3- " + patches.get(NTPos + 2).toString());
-      System.out.println("\n\n");
-      System.out.println("Type the number of the patch you want or type another " + "number to skip");
-      try {
-        choice = scanner.nextInt();
-        validInput = true;
-      } catch (InputMismatchException e) {
-        System.out.println("Invalid input! Please enter a number!!!\n");
-        scanner.next();
-      }
-    }
-    return choice;
-  }*/
+  
 
   /**
    * Gets the chosen piece using its position
@@ -398,11 +448,18 @@ public class SimpleGameData {
     return chosenPiece;
   }
 
-  
+  /**
+   * Returns the patch circle around the time board as a list
+   * @return patch circle
+   */
   public ArrayList<Patch> getPatches() {
     return patches;
   }
   
+  /**
+   * Returns the position of the neutral token
+   * @return neutral token position
+   */
   public int getNTPos() {
     return NTPos;
   }
@@ -431,56 +488,7 @@ public class SimpleGameData {
     return chosenPiece;
   }
 
-  /**
-   * Moves the player's time token if he skips his turn
-   * 
-   * @param scanner Read the player's input
-   */
-  /*public void moveAfterSkipping() {
-    int posCurrentPlayer = getTurnPlayer().getPosition();
-    Player currentPlayer = getTurnPlayer();
-    int buttonsAdded = 0;
-    int posOtherPlayer = currentPlayer.equals(player1) ? player2.getPosition() : player1.getPosition();
-    int i;
-    for (i = posCurrentPlayer + 1; i <= posOtherPlayer + 1 && i < 54; i++) {
-      if (timeBoard[i] == 1) {
-        updateButtonScore();
-      }
-      if (timeBoard[i] == 2) {
-        System.out.println("You moved over the square, you have to put it in your board\n");
-        System.out.println("\n\nBoard : \n" + getTurnPlayer().getBoard());
-        getTurnPlayer().getBoard().procedureToPutPatch(new Patch(0, 0, 0, 1, 1, new int[][] { { 1 } }), mode);
-        timeBoard[i] = 0;
-      }
-      buttonsAdded++;
-    }
-    currentPlayer.setPosition(i - 1);
-    currentPlayer.setButtons(buttonsAdded + currentPlayer.getButtons());
-    switchTurn();
-  }*/
-
-  /**
-   * Moves the player's time token if he buys a patch
-   * 
-   * @param chosenPiece The bought patch
-   * @param scanner     Read the player's input
-   */
-  /*private void moveAfterBuying(Patch chosenPiece) {
-    int j2;
-    int posCurrentPlayer = getTurnPlayer().getPosition();
-    for (j2 = posCurrentPlayer + 1; j2 <= chosenPiece.timeStep() + posCurrentPlayer && j2 < 54; j2++) {
-      if (timeBoard[j2] == 1) {
-        updateButtonScore();
-      }
-      if (timeBoard[j2] == 2) {
-        System.out.println("You moved over the square, you have to put it in your board\n");
-        System.out.println("\n\nBoard : \n" + getTurnPlayer().getBoard()+"\n\n");
-        getTurnPlayer().getBoard().procedureToPutPatch(new Patch(0, 0, 0, 1, 1, new int[][] { { 1 } }), mode);
-      }
-    }
-    getTurnPlayer().setPosition(j2 - 1);
-  }*/
-
+  
   /**
    * Increases the player's score by counting the number of buttons on his quilt
    * board
@@ -490,7 +498,10 @@ public class SimpleGameData {
     for (Patch patch : getTurnPlayer().getPatchesOwned()) {
       buttonsCollected += patch.buttons();
     }
-    System.out.println("You won " + buttonsCollected + " extra buttons!!!");
+    if (version==1) {
+      System.out.println("You won " + buttonsCollected + " extra buttons!!!");
+    }
+    
 
     int buttonsCurrentPlayer = getTurnPlayer().getButtons() + buttonsCollected;
     getTurnPlayer().setButtons(buttonsCurrentPlayer);
@@ -498,25 +509,7 @@ public class SimpleGameData {
 
   
 
-  /**
-   * Allows the player to finish his turn after buying a patch
-   * 
-   * @param scanner
-   * @param chosenPiece
-   * @param posOtherPlayer Position of the opponent
-   */
-  /*public void playAfterBuy(Patch chosenPiece, int posOtherPlayer) {
-    Objects.requireNonNull(chosenPiece);
-    getTurnPlayer().getBoard().procedureToPutPatch(chosenPiece, mode);
-    moveAfterBuying(chosenPiece);
-    if (getTurnPlayer().getBoard().verifyBonus() && bonusSquare7Owner == null && mode == 2) {
-      bonusSquare7Owner = getTurnPlayer();
-      System.out.println("You won the Square 7 * 7 bonus!!!\n");
-    }
-    if (getTurnPlayer().getPosition() > posOtherPlayer) {
-      switchTurn();
-    }
-  }*/
+  
 
   /**
    * Checks if the game ended
@@ -543,31 +536,7 @@ public class SimpleGameData {
     }
   }
 
-  /**
-   * Announces the winner by counting the score of each player
-   */
-  public void winner() {
-    int score1 = player1.getBoard().getNbButtons() - player1.getBoard().countScoreBlank();
-    int score2 = player2.getBoard().getNbButtons() - player2.getBoard().countScoreBlank();
-    if (player1.equals(bonusSquare7Owner)) {
-      score1 += 7;
-    }
-    if (player2.equals(bonusSquare7Owner)) {
-      score2 += 7;
-    }
-    if (score1 > score2) {
-      System.out.println("The winner is player1!");
-    } else if (score1 < score2) {
-      System.out.println("The winner is player2!");
-    } else {
-      if (firstFinisher.equals(player1)) {
-        System.out.println("The winner is player1!");
-      } else {
-        System.out.println("The winner is player2!");
-      }
-    }
-  }
-
+  
   
 
   /**

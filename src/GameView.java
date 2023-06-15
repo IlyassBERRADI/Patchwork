@@ -4,21 +4,25 @@ import java.util.Scanner;
 
 import fr.umlv.zen5.ApplicationContext;
 
+
+/**
+ * An interface representing the game's interface
+ * 
+ * @author Antoine BENOIT
+ * @author Ilyass BERRADI
+ * @since 07/05/2023
+ *
+ */
 public interface GameView {
-  /*public void announcePlayerTurn();
-  public void play();*/
-  //int getPlayerChoice(ApplicationContext context, SimpleGameData data);
-  //public void announcePlayerTurn(SimpleGameData data, Graphics2D graphics);
-  //public void draw(ApplicationContext context, SimpleGameData data);
+  
+  
   /**
-   * Puts the patch in a certain position chosen by the player
+   * Goes once in the game loop, which consists in retrieving user actions,
+   * transmissing it to the GameView and GameData, and dealing with time events.
    * 
-   * @param scanner     Reads the player's input
-   * @param chosenPiece The piece the player wants to put
-   * @param mode        The game mode
+   * @param context {@code ApplicationContext} of the game.
+   * @param data    GameData of the game.
    */
-  
-  
   public void play_game(ApplicationContext context, SimpleGameData data);
   
   

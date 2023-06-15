@@ -1,16 +1,22 @@
 
 import java.awt.Color;
 import java.util.InputMismatchException;
+import java.util.Objects;
 import java.util.Scanner;
 
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
 
+/**
+ * A class that implements the game's loop and handles the actions of the player
+ * 
+ * @author Antoine BENOIT
+ * @author Ilyass BERRADI
+ * @since 07/05/2023
+ *
+ */
 public class SimpleGameController {
   
-  /*private static boolean gameLoop(ApplicationContext context, SimpleGameData data, SimpleGameView view) {
-    
-  }*/
   
   
   /**
@@ -19,7 +25,7 @@ public class SimpleGameController {
    * @param context {@code ApplicationContext} of the game.
    */
   private static void memoryGame(ApplicationContext context) {
-      
+      Objects.requireNonNull(context);
       Player player1 = new Player();
       Player player2 = new Player();
       GameView gameView;
@@ -34,10 +40,8 @@ public class SimpleGameController {
         var height = screenInfo.getHeight();
         var marginX = 300;
         var marginY = 200;
-        //System.out.println("width= "+width+" height= "+height);
-        var images = new ImageLoader("data", "patch1.png", "patch2.png", "patch3.png", "patch4.png");
         gameView = SimpleGameView.initGameGraphics(marginX+50, marginY-50, (int) Math.min(width, height) - 2 * marginY+10, data,
-            images, (int)width, (int)height);
+             (int)width, (int)height);
       }
       
       
@@ -46,34 +50,15 @@ public class SimpleGameController {
           gameView.play_game(context, data);
           
       }
-      data.winner();
+      
+      if (data.getVersion()==1) {
+        ConsoleGameView.winner(data);
+      }
   }
   
   
   
-  /**
-   * Allows the player to play his turn
-   */
-  /*public static void play(ApplicationContext context, SimpleGameData data, GameView view) {
-    Scanner scanner = new Scanner(System.in);
-    //view.announcePlayerTurn(data, );  we're gonna figure it out later
-    boolean madeChoice = false;
-    int posOtherPlayer = data.getTurnPlayer().equals(data.getPlayer1()) ? data.getPlayer2().getPosition() : data.getPlayer1().getPosition();
-    Patch chosenPiece = null;
-    while (!madeChoice) {
-      int choice = view.getPlayerChoice(context, data);
-      if (choice == 1 || choice == 2 || choice == 3) {
-        chosenPiece = data.buyPatch(choice);
-        if (chosenPiece != null) {
-          madeChoice = true;
-        }
-      } else {
-        data.moveAfterSkipping(scanner);
-        return;
-      }
-    }
-    data.playAfterBuy(scanner, chosenPiece, posOtherPlayer);
-  }*/
+  
   
   /**
    * Executable program.
@@ -82,19 +67,8 @@ public class SimpleGameController {
    */
   public static void main(String[] args) {
       
+    Application.run(Color.WHITE, (context)->memoryGame(context));
       
-      //if (data.getVersion()==2) {
-      Application.run(Color.WHITE, (context)->memoryGame(context));
-      /*}
-      else if (data.getVersion()==1) {
-        while (!data.endGame()) {
-          System.out.println(data);
-          data.announcePlayerTurn();
-          data.play();
-          data.tieWinner();
-        }
-        data.winner();
-      }*/
       
   }
 }

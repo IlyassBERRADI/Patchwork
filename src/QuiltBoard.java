@@ -1,4 +1,6 @@
 import java.util.InputMismatchException;
+import java.util.Objects;
+
 import fr.umlv.zen5.KeyboardKey;
 import java.util.Scanner;
 
@@ -40,7 +42,7 @@ public class QuiltBoard {
    * @param builder
    * @return StringBuilder
    */
-  public StringBuilder buildLine(StringBuilder builder) {
+  private StringBuilder buildLine(StringBuilder builder) {
     for (int i = 0; i < 9; i++) {
       var separator = "";
       builder.append(i);
@@ -59,6 +61,11 @@ public class QuiltBoard {
     return builder;
   }
   
+  
+  /**
+   * Returns the patches in the quiltboard
+   * @return array of int values
+   */
   public int[][] getPatchesCollected(){
     return patchsCollected;
   }
@@ -88,6 +95,7 @@ public class QuiltBoard {
    * @param p patch to put
    */
   public void putPatch(int x, int y, Patch p) {
+    Objects.requireNonNull(p);
     for (int i = x; i < x + p.height(); i++) {
       for (int j = y; j < y + p.width(); j++) {
         patchsCollected[i][j] = patchsCollected[i][j] + p.shape()[i - x][j - y];
@@ -105,6 +113,7 @@ public class QuiltBoard {
    * @return boolean
    */
   public boolean ableToPut(int x, int y, Patch p) {
+    Objects.requireNonNull(p);
     for (int i = x; i < x + p.height(); i++) {
       for (int j = y; j < y + p.width(); j++) {
         if ((8 < i || 8 < j) || (patchsCollected[i][j] == 1 && p.shape()[i - x][j - y] == 1)) {
@@ -117,77 +126,7 @@ public class QuiltBoard {
     return true;
   }
 
-  /**
-   * Puts the patch in a certain position chosen by the player
-   * 
-   * @param scanner     Reads the player's input
-   * @param chosenPiece The piece the player wants to put
-   * @param mode        The game mode
-   */
-  /*public void procedureToPutPatch(Patch chosenPiece, int mode) {
-    int x = 0, y = 0;
-    Patch pieceToPut;
-    do {
-      x = getInputX();
-      y = getInputY();
-      if (mode == 2) {
-        pieceToPut = chooseRotation(chosenPiece);
-      } else {
-        pieceToPut = chosenPiece;
-      }
-    } while (!ableToPut(x, y, pieceToPut));
-    putPatch(x, y, pieceToPut);
-    addButtons(pieceToPut);
-  }*/
-
-  /**
-   * Gets row position typed in by the player
-   * 
-   * @param scanner
-   * @return Row position
-   */
-  /*private int getInputX() {
-    Scanner scanner = new Scanner(System.in);
-    int x = 0;
-    boolean validInput = false;
-    while (!validInput) {
-      System.out.println("Board :\n"+toString()+"\n\n");
-      System.out.println("In which position of the quilt do you want to put the patch");
-      System.out.println("Write the line number :");
-      try {
-        x = scanner.nextInt();
-        validInput = true;
-      } catch (InputMismatchException e) {
-        System.out.println("Invalid input! Please enter a number!!!\n");
-        scanner.next();
-      }
-    }
-    return x;
-  }*/
-
-  /**
-   * Gets column position typed in by the player
-   * 
-   * @param scanner
-   * @return Column position
-   */
-  /*private int getInputY() {
-    Scanner scanner = new Scanner(System.in);
-    int y = 0;
-    boolean validInput = false;
-    while (!validInput) {
-      System.out.println("Write the column number :");
-      try {
-        y = scanner.nextInt();
-        validInput = true;
-      } catch (InputMismatchException e) {
-        System.out.println("Invalid input! Please enter a number!!!\n");
-        scanner.next();
-      }
-    }
-    return y;
-  }*/
-
+  
   /**
    * Returns the number of buttons collected in the quiltboard
    * 
@@ -206,6 +145,7 @@ public class QuiltBoard {
    * @return rotated patch
    */
   public Patch switchRotation(Patch p, int r) {
+    Objects.requireNonNull(p);
     switch (r) {
     case 1:
       return rotateRight(p);
@@ -225,6 +165,7 @@ public class QuiltBoard {
    * @return Patch after rotation
    */
   public Patch rotateRight(Patch p) {
+    Objects.requireNonNull(p);
     int[][] shape = new int[p.width()][p.height()];
     for (int i = 0; i < p.width(); i++) {
       for (int j = 0; j < p.height(); j++) {
@@ -241,6 +182,7 @@ public class QuiltBoard {
    * @return Patch after rotation
    */
   public Patch rotateLeft(Patch p) {
+    Objects.requireNonNull(p);
     return rotateRight(rotateRight(rotateRight(p)));
   }
 
@@ -251,6 +193,7 @@ public class QuiltBoard {
    * @return Patch after rotation
    */
   public Patch rotateDown(Patch p) {
+    Objects.requireNonNull(p);
     return rotateRight(rotateRight(p));
   }
 
@@ -260,6 +203,7 @@ public class QuiltBoard {
    * @param patch Patch to add its buttons
    */
   public void addButtons(Patch patch) {
+    Objects.requireNonNull(patch);
     nbButtons += patch.buttons();
   }
 
